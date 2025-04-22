@@ -3,7 +3,7 @@ public class GameApp {
         javax.swing.SwingUtilities.invokeLater(() -> {
             GameModel model = new GameModel(4); // 4x4 = 16 cards
             GameView view = new GameView(model);
-            new GameController(model, view); // Person 3's job
+            new GameController(model, view); // Controller & Timer Manager's job
         });
     }
 }
