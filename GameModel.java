@@ -1,0 +1,100 @@
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Arrays;
+
+
+public class GameModel{
+
+    // Instance Variables
+
+    int total_cards; // number of cards in the game
+    ArrayList<String> pets; // array that stores shuffled pet names
+    ArrayList<Boolean> matched; // array that tracks match status of each pet
+    ArrayList<String> pets_names = new ArrayList<>(
+        Arrays.asList("🐶", "🐱", "🐰", "🐟", "🐴", "🐹")
+    );
+
+
+    // Constructor
+
+    GameModel(int total_cards){
+
+        // initializes board with shuffled pairs of pets, initializes matched tracking
+        this.total_cards = total_cards;
+        matched = new ArrayList<>();
+        pets = new ArrayList<>();
+        for(int i=0; i < total_cards; i++){
+            matched.add(false); // all cards start unmatched, initialized as false
+        }
+        initializePets();
+
+    }
+
+    // Instance Methods
+
+    void initializePets(){
+        // initalizes a string array to store all the pet cards
+        ArrayList<String> all_pets = new ArrayList<>();
+
+        // add pets to array (every pet appears twice to form a pair)
+        for(int i = 0; i < total_cards / 2; i++){
+            String pet = pets_names.get(i % pets_names.size()); // cycles through pet names
+            all_pets.add(pet);
+            all_pets.add(pet);
+        }
+
+        // used shuffle from collections library to randomize pet placement
+        Collections.shuffle(all_pets); 
+        pets.addAll(all_pets);
+    }
+
+    String revealPet(int index){
+        // returns the pet value at a specific index in the array
+        return pets.get(index);
+    }
+
+    boolean checkMatch(int index_one, int index_two){
+        // handles case where user presses the same card twice
+        if(index_one == index_two){
+            return false;
+        }
+
+        // gets the pet names at the selected card indices
+        String pets_index_one = pets.get(index_one);
+        String pets_index_two = pets.get(index_two);
+
+        // variable to track if the pair is a match
+        boolean is_match = false;
+
+        // if the pair matches set the variable to true and mark both indices as true
+        if(pets_index_one.equals(pets_index_two)){
+            is_match = true;
+            matched.set(index_one, true);
+            matched.set(index_two, true);
+        }
+
+        return is_match;
+    }
+
+    boolean allMatched(){
+        // checks if all cards have been matched (win condition)
+        // iterates through matched based on index
+        for(int i = 0; i < matched.size(); i++){
+            // if a card is found that hasnt been matched yet returns false
+            if(matched.get(i) == false){
+                return false;
+            }
+        }
+        // if all cards are matched returns true
+        return true;
+    }
+
+    int getTotalCards(){
+        // simple getter function that returns the total cards variable
+        return total_cards;
+    }
+
+
+    // We will later add the save state, difficulty settings, and sound effect functionality for the beta version.
+
+}
