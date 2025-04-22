@@ -52,7 +52,7 @@ public class GameView {
         if (option == 0) {
             // Restart
             SwingUtilities.invokeLater(() -> frame.dispose());
-            GameApp.main(null); // Reload the game
+            GameMain.main(null); // Reload the game
         } else {
             System.exit(0);
         }
