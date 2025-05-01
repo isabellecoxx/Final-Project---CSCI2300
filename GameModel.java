@@ -1,6 +1,6 @@
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Collections;
+import java.util.Arrays;
 
 
 public class GameModel{
@@ -16,32 +16,18 @@ public class GameModel{
 
 
     // Constructor
-    GameModel(String difficulty) {
-        if (difficulty.equalsIgnoreCase("easy")) {
-            this.total_cards = 6;
-        } else if (difficulty.equalsIgnoreCase("medium")) {
-            this.total_cards = 12;
-        } else if (difficulty.equalsIgnoreCase("hard")) {
-            this.total_cards = 20;
-        } else {
-            this.total_cards = 12; // default
-        }
-    
+
+    GameModel(int total_cards){
+
+        // initializes board with shuffled pairs of pets, initializes matched tracking
+        this.total_cards = total_cards;
         matched = new ArrayList<>();
         pets = new ArrayList<>();
-        
-        // Add pairs
-        for (int i = 0; i < total_cards / 2; i++) {
-            String pet = pets_names.get(i % pets_names.size());
-            pets.add(pet);
-            pets.add(pet);
+        for(int i=0; i < total_cards; i++){
+            matched.add(false); // all cards start unmatched, initialized as false
         }
-    
-        Collections.shuffle(pets);
-    
-        for (int i = 0; i < total_cards; i++) {
-            matched.add(false);
-        }
+        initializePets();
+
     }
 
     // Instance Methods
