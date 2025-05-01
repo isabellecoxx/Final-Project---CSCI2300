@@ -1,28 +1,42 @@
-import javax.swing.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.List;
+import javax.swing.*;
+
 
 public class GameController {
     private final GameModel model;           
     private final GameView view;             
     private final List<CardButton> buttons; 
-    private final Timer gameTimer;          
+    private final Timer gameTimer;
+    private int timeLeft;
+    private int flipDelay = 1000; // default          
 
     private CardButton firstSelected = null;
     private CardButton secondSelected = null;
-    private int timeLeft = 120;
 
-    public GameController(GameModel model, GameView view) {
+    public GameController(GameModel model, GameView view, String difficulty) {
         this.model = model;
         this.view = view;
         this.buttons = view.getCardButtons();
+
+        if (difficulty.equalsIgnoreCase("easy")) {
+            timeLeft = 120;
+            flipDelay = 1200;
+        } else if (difficulty.equalsIgnoreCase("medium")) {
+            timeLeft = 90;
+            flipDelay = 900;
+        } else if (difficulty.equalsIgnoreCase("hard")) {
+            timeLeft = 60;
+            flipDelay = 700;
+        }
+        view.updateTimerLabel(timeLeft);
 
         addCardListeners();
         gameTimer = new Timer(1000, new TimerTick());
         gameTimer.start();
     }
-
+    
     private void addCardListeners() {
         for (CardButton button : buttons) {
             button.addActionListener(e -> handleCardClick(button));
@@ -52,7 +66,7 @@ public class GameController {
         boolean match = model.checkMatch(i1, i2); //model stores match status
 
         //delay before hiding mismatched cards
-        Timer delay = new Timer(700, e -> {
+        Timer delay = new Timer(flipDelay, e -> {
             if (!match) {
                 firstSelected.flipDown();
                 secondSelected.flipDown();
