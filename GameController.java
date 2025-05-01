@@ -48,6 +48,8 @@ public class GameController {
         int index = button.getIndex();
         String pet = model.revealPet(index); //model decides what pet to show
         button.flipUp(pet);
+        // 🔊 Play flip sound
+        SoundManager.playSound("sounds/flip.wav");
 
         if (firstSelected == null) {
             firstSelected = button;
@@ -69,6 +71,9 @@ public class GameController {
             if (!match) {
                 firstSelected.flipDown();
                 secondSelected.flipDown();
+            }else {
+                // 🔊 Play match sound
+                SoundManager.playSound("sounds/match.wav");
             }
 
             firstSelected = null;
@@ -77,6 +82,7 @@ public class GameController {
             //asks model if game is finished
             if (model.allMatched()) {
                 gameTimer.stop();
+                SoundManager.playSound("sounds/win.wav"); // 🔊 Win sound
                 view.showEndDialog("You matched all pets! You win!");
             }
         });
@@ -93,6 +99,7 @@ public class GameController {
 
             if (timeLeft <= 0) {
                 gameTimer.stop();
+                SoundManager.playSound("sounds/lose.wav"); // 🔊 Lose sound
                 view.showEndDialog("Time’s up! You lost.");
             }
         }
