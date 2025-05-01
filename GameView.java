@@ -27,6 +27,14 @@ public class GameView {
         // Add card buttons to grid
         for (int i = 0; i < model.getTotalCards(); i++) {
             CardButton btn = new CardButton(i);
+
+            if(model.getMatched().get(i)){
+                btn.setText(model.revealPet(i));
+                btn.setEnabled(false);
+            }
+            else{
+                btn.setText("❓");  
+            }
             buttons.add(btn);
             boardPanel.add(btn);
         }

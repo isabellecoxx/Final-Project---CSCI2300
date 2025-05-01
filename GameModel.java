@@ -10,11 +10,11 @@ import java.io.ObjectInputStream;
 import java.io.IOException;
 
 
-public class GameModel{
+public class GameModel implements Serializable{
 
     // Instance Variables
 
-    static long serialVersionUID = 1L; // ID to verify class compatibility
+    private static final long serialVersionUID = 1L; // ID to verify class compatibility
 
     int total_cards; // number of cards in the game
     ArrayList<String> pets; // array that stores shuffled pet names
@@ -113,6 +113,11 @@ public class GameModel{
     int getTotalCards(){
         // simple getter function that returns the total cards variable
         return total_cards;
+    }
+
+    ArrayList<Boolean> getMatched(){
+        // simple getter function that returns the matched variable
+        return matched;
     }
     
     // saves current GameModel object to a specified file
