@@ -2,8 +2,20 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
 
+import java.io.Serializable;
+import java.io.FileOutputStream;
+import java.io.FileInputStream;
+import java.io.ObjectOutputStream;
+import java.io.ObjectInputStream;
+import java.io.IOException;
+
+
 public class GameModel{
+
     // Instance Variables
+
+    static long serialVersionUID = 1L; // ID to verify class compatibility
+
     int total_cards; // number of cards in the game
     ArrayList<String> pets; // array that stores shuffled pet names
     ArrayList<Boolean> matched; // array that tracks match status of each pet
@@ -102,6 +114,59 @@ public class GameModel{
         // simple getter function that returns the total cards variable
         return total_cards;
     }
-    // We will later add the save state, difficulty settings, and sound effect functionality for the beta version.
+    
+    // saves current GameModel object to a specified file
+    void saveGame(String filename){
+        try{
+
+            // creates output stream to write to file
+            FileOutputStream file_out = new FileOutputStream(filename);
+            ObjectOutputStream out = new ObjectOutputStream(file_out);
+
+            // writes current GameModel object to the file
+            out.writeObject(this);
+
+            // closes both streams 
+            file_out.close();
+            out.close();
+
+            System.out.println("game saved to " + filename);
+        }
+        catch (IOException e){
+
+            // catch exceptions (such as file not found, access denied, etc) and prints error message
+            System.out.println("failed to save game");
+            e.printStackTrace();
+
+        }
+    }
+
+    // loads GameModel object from a specified file
+    static GameModel loadGame(String filename){
+        try{
+
+            // creates input stream to read from file
+            FileInputStream file_in = new FileInputStream(filename);
+            ObjectInputStream in = new ObjectInputStream(file_in);
+
+            // reads object from file, explicitly casts back to GameModel
+            GameModel loaded = (GameModel) in.readObject();
+
+            // closes both streams 
+            file_in.close();
+            in.close();
+            
+            System.out.println("game loaded from " + filename);
+            return loaded;
+        }
+        catch (IOException | ClassNotFoundException e){
+
+            // catch exceptions (in reading file or casting object) and prints error message
+            System.out.println("failed to load game");
+            return null;
+
+        }
+    }
+
 }
 

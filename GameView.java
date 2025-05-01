@@ -57,4 +57,8 @@ public class GameView {
             System.exit(0);
         }
     }
+
+    public JFrame getFrame(){
+        return frame;
+    }
 }
